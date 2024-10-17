@@ -1,7 +1,8 @@
 import React from 'react';
 
 function InvoicePreview({ invoiceData }) {
-  const { clientName, clientAddress, items } = invoiceData;
+  // Set default values if invoiceData or items are undefined
+  const { clientName = '', clientAddress = '', items = [] } = invoiceData;
 
   const calculateTotal = () => {
     return items.reduce((total, item) => total + item.quantity * item.price, 0);
@@ -26,16 +27,24 @@ function InvoicePreview({ invoiceData }) {
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => (
-            <tr key={index}>
-              <td className="border p-2">{item.description}</td>
-              <td className="border p-2 text-right">{item.quantity}</td>
-              <td className="border p-2 text-right">${item.price}</td>
-              <td className="border p-2 text-right">
-                ${item.quantity * item.price}
+          {items.length > 0 ? (
+            items.map((item, index) => (
+              <tr key={index}>
+                <td className="border p-2">{item.description}</td>
+                <td className="border p-2 text-right">{item.quantity}</td>
+                <td className="border p-2 text-right">${item.price}</td>
+                <td className="border p-2 text-right">
+                  ${item.quantity * item.price}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td className="border p-2 text-center" colSpan="4">
+                No items added.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
       <h3 className="text-right mt-4">
